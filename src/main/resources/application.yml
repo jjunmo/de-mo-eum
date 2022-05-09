@@ -1,0 +1,41 @@
+spring:
+  security:
+    user:
+      password: root
+      roles: ADMIN
+      name: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: 'false'
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: 'true'
+        show_sql: 'false'
+  h2:
+    console:
+      enabled: true
+      path: /db
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+#datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
+#    username: junmo
+#    password: a123456
+root:
+  key: AnyKeyYouWantTo
+server:
+  port: '8080'
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: debug
