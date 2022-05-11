@@ -54,7 +54,7 @@ public class BoardApiController {
     public ResponseDto<Integer> replyDelete(@AuthenticationPrincipal PrincipalDetail principalDetail ,@PathVariable("boardId") Integer boardId, @PathVariable("replyId") Integer replyId) {
 
         User replyWriter = boardService.댓글주인(replyId);
-        if(replyWriter == principalDetail.getUser()) {
+        if(replyWriter.getId() == principalDetail.getUser().getId()) {
             boardService.댓글삭제(replyId);
             return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
         } else {
