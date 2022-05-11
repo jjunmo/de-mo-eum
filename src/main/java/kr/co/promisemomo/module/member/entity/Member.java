@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -41,46 +42,29 @@ public class Member {
     @JoinColumn(name = "kakaoProfile", referencedColumnName = "k_kakaoId")
     private KakaoProfile kakaoProfile;
 
-    //하나의 약속에 여러명의 멤버
-    @ManyToOne
-    @JoinColumn(name = "promise_id",referencedColumnName = "id")
-    private Promise promise;
+    // 하나의 약속에 여러명의 멤버
+    // => 회원 한명이 약속 하나밖에 못만듬
+//    @ManyToOne
+//    @JoinColumn(name = "promise_id", referencedColumnName = "id")
+//    private Promise promise;
 
-    //하나의 멤버당 여러개의 약속
-    @OneToMany(mappedBy ="member")
-    private List<Promise> promises = new ArrayList<>();
-
+    // 하나의 멤버당 여러개의 약속
+//    @OneToMany(mappedBy ="member")
+//    private List<Promise> promises = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
     @Column(name = "create_date")
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+//    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDateTime createDate;
 
     @Column(name = "update_date")
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+//    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDateTime updateDate;
-
-
     @PrePersist // DB에 INSERT 되기 직전에 실행. 즉 DB에 값을 넣으면 자동으로 실행됨
     public void createDate() {
         this.createDate = LocalDateTime.now();
     }
 
-    public Long getKakaoId() {
-        return kakaoProfile.getK_kakaoId();
-    }
-
-    public String getNickname() {
-        return kakaoProfile.getK_nickname();
-    }
-
-    public String getProfile_image_url() {
-        return kakaoProfile.getK_profile_image_url();
-    }
-
-    public String getThumbnail_image_url() {
-        return kakaoProfile.getK_thumbnail_image_url();
-    }
 }

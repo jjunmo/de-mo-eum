@@ -1,6 +1,5 @@
 package kr.co.promisemomo.module.member.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,17 +19,29 @@ public class Promise {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
     @Column(name = "promise_name")
     private String name;
 
-    //하나의 멤버당 여러개의 약속
+    private Integer year;
+    private Integer month;
+    private Integer day;
+
+    @Column(name = "start_time")
+    private Integer startTime;
+
+    @Column(name = "end_time")
+    private Integer endTime;
+
+    // 주최자의 회원 정보
     @ManyToOne
-    @JoinColumn(name="member_id",referencedColumnName = "id")
+    @JoinColumn(name="member_id", referencedColumnName = "id")
     private Member member;
 
-    //하나의 약속에 여러명의 멤버
-    @OneToMany(mappedBy = "promise")
-    private List<Member> members=new ArrayList<>();
+    // 참가자들
+    // 캘린더에서 바로 참가자가 몇명인지 확인을 해야하는 경우?
+//    @OneToMany(mappedBy = "promise")
+//    private List<PromiseMember> members = new ArrayList<>();
+
 }
