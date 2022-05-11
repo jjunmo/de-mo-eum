@@ -75,8 +75,7 @@
 
                 <div th:if="${reply.user.username == #authentication.name}" class="d-flex ">
                     <div th:text="|작성자 : ${reply.user.username} &nbsp|" style="font-weight:bold">작성자 : YUN &nbsp;</div>
-                    <button th:onclick="|javascript:index.replyDelete(${board.id},${reply.id})|" class="btn btn-outline-danger">삭제
-                    </button>
+                    <button th:onclick="|javascript:index.replyDelete(${board.id},${reply.id})|" class="btn btn-outline-danger">삭제</button>
                 </div>
                 <div th:unless="${reply.user.username == #authentication.name}" class="d-flex ">
                     <div th:text="|작성자 : ${reply.user.username} &nbsp|" style="font-weight:bold">작성자 : YUN &nbsp;</div>

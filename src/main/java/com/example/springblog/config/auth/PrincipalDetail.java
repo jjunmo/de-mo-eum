@@ -2,6 +2,7 @@ package com.example.springblog.config.auth;
 
 import com.example.springblog.model.User;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +13,7 @@ import java.util.Collection;
 // 스프링 시큐리티의 고유한 세션저장소에 저장을 해준다.
 @Getter
 public class PrincipalDetail implements UserDetails {
+
     private User user; // 콤포지션
 
     public PrincipalDetail(User user) {

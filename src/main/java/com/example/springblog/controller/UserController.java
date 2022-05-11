@@ -183,4 +183,9 @@ public class UserController {
         model.addAttribute("boards", boardService.작성글목록(principalDetail.getUser()));
         return "/user/myBoard";
     }
+
+    @GetMapping("/auth/kakao/logout")
+    public String logout(String code){
+        return "/";
+    }
 }
