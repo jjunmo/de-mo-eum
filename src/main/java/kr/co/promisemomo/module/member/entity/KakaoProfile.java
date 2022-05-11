@@ -5,17 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="Member")
+@Table(name="kakaoProfile")
 public class KakaoProfile {
 
     @Id
@@ -24,15 +21,16 @@ public class KakaoProfile {
 
     //사용자 프로퍼티 추가
 
+    @Column(name = "k_kakaoId")
     private Long k_kakaoId;
 
+    @Column(name = "k_nickname")
     private String k_nickname;
 
+    @Column(name = "k_profile_image_url")
     private String k_profile_image_url;
 
+    @Column(name = "k_thumbnail_image_url")
     private String k_thumbnail_image_url;
-
-
-
 
 }

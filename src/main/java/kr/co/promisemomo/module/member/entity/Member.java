@@ -10,28 +10,39 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "Member")
 public class Member {
 
     @Id
     @GeneratedValue
     private Long idx;
 
+    @Column(name = "kakaoId")
     private Long kakaoId;
 
+    @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "profile_image_url")
     private String profile_image_url;
 
+    @Column(name = "thumbnail_image_url")
     private String thumbnail_image_url;
 
-    @JoinColumn(name = "")
+    @OneToOne
+    @JoinColumn(name = "kakaoProfile", referencedColumnName = "k_kakaoId")
     private KakaoProfile kakaoProfile;
+
+    @ManyToOne
+    @JoinColumn(name = "promises", referencedColumnName = "promisename")
+    private List<Promise> promises;
 
 
     @Enumerated(EnumType.STRING)
@@ -51,4 +62,19 @@ public class Member {
         this.createDate = LocalDateTime.now();
     }
 
+    public Long getKakaoId() {
+        return kakaoProfile.getK_kakaoId();
+    }
+
+    public String getNickname() {
+        return kakaoProfile.getK_nickname();
+    }
+
+    public String getProfile_image_url() {
+        return kakaoProfile.getK_profile_image_url();
+    }
+
+    public String getThumbnail_image_url() {
+        return kakaoProfile.getK_thumbnail_image_url();
+    }
 }
