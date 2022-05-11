@@ -8,8 +8,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,12 +17,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Member")
+@Table(name = "member")
 public class Member {
 
     @Id
     @GeneratedValue
-    private Long idx;
+    private Long id;
 
     @Column(name = "kakaoId")
     private Long kakaoId;
@@ -36,13 +36,19 @@ public class Member {
     @Column(name = "thumbnail_image_url")
     private String thumbnail_image_url;
 
+    //카카오프로필정보
     @OneToOne
     @JoinColumn(name = "kakaoProfile", referencedColumnName = "k_kakaoId")
     private KakaoProfile kakaoProfile;
 
+    //하나의 약속에 여러명의 멤버
     @ManyToOne
-    @JoinColumn(name = "promises", referencedColumnName = "promisename")
-    private List<Promise> promises;
+    @JoinColumn(name = "promise_id",referencedColumnName = "id")
+    private Promise promise;
+
+    //하나의 멤버당 여러개의 약속
+    @OneToMany(mappedBy ="member")
+    private List<Promise> promises = new ArrayList<>();
 
 
     @Enumerated(EnumType.STRING)
