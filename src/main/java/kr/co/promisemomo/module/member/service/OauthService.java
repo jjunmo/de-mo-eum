@@ -28,7 +28,7 @@ public class OauthService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=08c37023b1f6eec0e156e4d5c26bc9b6"); // TODO REST_API_KEY 입력
+            sb.append("&client_id=f398d5912c151f13e22b5fecfbd1f249"); // TODO REST_API_KEY 입력
             sb.append("&redirect_uri=http://localhost:8080/oauth/kakao"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=").append(code);
             bw.write(sb.toString());
@@ -100,7 +100,10 @@ public class OauthService {
             //JsonParser parser = new JsonParser();
             JsonElement element = JsonParser.parseString(result);
 
-            int id = element.getAsJsonObject().get("id").getAsInt();
+            Long id = element.getAsJsonObject().get("k_kakaoId").getAsLong();
+            String nickname = element.getAsJsonObject().get("k_nickname").getAsString();
+            String profile_image_url = element.getAsJsonObject().get("k_profile_image_url").getAsString();
+            String thumbnail_image_ur = element.getAsJsonObject().get("k_thumbnail_image_url").getAsString();
             boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
             String email = "";
             if(hasEmail){

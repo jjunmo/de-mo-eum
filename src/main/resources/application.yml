@@ -1,4 +1,6 @@
 spring:
+  thymeleaf:
+    prefix:
   jpa:
     hibernate:
       ddl-auto: create-drop
