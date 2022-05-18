@@ -19,6 +19,5 @@ public class OauthController {
     public void kakaoCallback(@RequestParam String code) {
         System.out.println("code :" +code);
         String acces_token =oauthService.getKakaoAccessToken(code);
-
     }
 }
