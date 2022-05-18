@@ -1,10 +1,7 @@
 package kr.co.promisemomo.module.member.entity;
 
 import kr.co.promisemomo.module.member.Role.RoleType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.format.annotation.DateTimeFormat;
 

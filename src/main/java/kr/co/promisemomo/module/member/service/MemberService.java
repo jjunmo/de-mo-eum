@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberService {
 
-    @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository){
+        this.memberRepository=memberRepository;
+    }
 }
