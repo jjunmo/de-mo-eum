@@ -1,7 +1,6 @@
-package kr.co.promisemomo.module.member.repository;
+package kr.co.promisemomo.module.promise.repository;
 
-import kr.co.promisemomo.module.member.entity.Member;
-import kr.co.promisemomo.module.member.entity.PromiseMember;
+import kr.co.promisemomo.module.promise.entity.PromiseMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

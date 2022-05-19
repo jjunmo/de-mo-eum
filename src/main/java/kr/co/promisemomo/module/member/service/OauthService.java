@@ -1,7 +1,8 @@
-package kr.co.promisemomo.module.member.service.oauth;
+package kr.co.promisemomo.module.member.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -9,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Service
+@Slf4j
 public class OauthService {
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
@@ -25,38 +27,41 @@ public class OauthService {
 
             //POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            StringBuilder sb = new StringBuilder();
-            sb.append("grant_type=authorization_code");
-            sb.append("&client_id=f398d5912c151f13e22b5fecfbd1f249"); // REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:8080/oauth/kakao"); //redirect_uri 입력
-            sb.append("&code=" + code);
-            bw.write(sb.toString());
+            String sb = "grant_type=authorization_code" +
+                        "&client_id=f398d5912c151f13e22b5fecfbd1f249" + // REST_API_KEY 입력
+                        "&redirect_uri=http://localhost:8080/oauth/kakao" + //redirect_uri 입력
+                        "&code=" + code;
+            bw.write(sb);
             bw.flush();
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            log.info("responseCode : " + responseCode);
+
+            if (responseCode != 200) {
+                return "fail";
+            }
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
-            String result = "";
+            StringBuilder result = new StringBuilder();
 
             while ((line = br.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
-            System.out.println("response body : " + result);
+            log.info("response body : " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             //deprecated
             //JsonParser parser = new JsonParser();
-            JsonElement element = JsonParser.parseString(result);
+            JsonElement element = JsonParser.parseString(result.toString());
 
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
-            System.out.println("access_token : " + access_Token);
-            System.out.println("refresh_token : " + refresh_Token);
+            log.info("access_token : " + access_Token);
+            log.info("refresh_token : " + refresh_Token);
 
             br.close();
             bw.close();

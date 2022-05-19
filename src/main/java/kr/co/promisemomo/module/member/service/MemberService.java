@@ -2,7 +2,11 @@ package kr.co.promisemomo.module.member.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import kr.co.promisemomo.module.member.entity.KakaoProfile;
+import kr.co.promisemomo.module.member.entity.Member;
+import kr.co.promisemomo.module.member.repository.KakaoProfileRepository;
 import kr.co.promisemomo.module.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -12,15 +16,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
-    private MemberRepository memberRepository;
+    // TODO: 이것은 잘못된 코드
+    private final MemberRepository memberRepository;
+    private final KakaoProfileRepository kakaoProfileRepository;
 
-    public MemberService(MemberRepository memberRepository){
-        this.memberRepository=memberRepository;
-    }
-
-    public void createKakaoUser(String token)  {
+    public Member createKakaoUser(String token)  {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
@@ -37,6 +40,10 @@ public class MemberService {
             int responseCode = conn.getResponseCode();
             System.out.println("responseCode : " + responseCode);
 
+            if (responseCode != 200) {
+                return null;
+            }
+
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
@@ -49,7 +56,7 @@ public class MemberService {
 
             JsonElement element = JsonParser.parseString(result);
 
-            int id = element.getAsJsonObject().get("id").getAsInt();
+            long id = element.getAsJsonObject().get("id").getAsLong();
             boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
             String email = "";
             if(hasEmail){
@@ -61,8 +68,23 @@ public class MemberService {
 
             br.close();
 
+            // KakaoProfile Save
+            KakaoProfile kakaoProfileParam = new KakaoProfile();
+            kakaoProfileParam.setK_kakaoId(id);
+
+            KakaoProfile kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
+
+            // Member Save
+            // setKakaoProfile
+            Member memberParam = new Member();
+            memberParam.setKakaoProfile(kakaoProfile);
+
+            return memberRepository.save(memberParam);
+
+
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

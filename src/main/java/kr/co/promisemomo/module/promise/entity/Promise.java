@@ -1,5 +1,6 @@
-package kr.co.promisemomo.module.member.entity;
+package kr.co.promisemomo.module.promise.entity;
 
+import kr.co.promisemomo.module.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

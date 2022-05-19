@@ -1,14 +1,10 @@
 package kr.co.promisemomo.module.member.entity;
 
-import kr.co.promisemomo.module.member.Role.RoleType;
+import kr.co.promisemomo.module.member.role.RoleType;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

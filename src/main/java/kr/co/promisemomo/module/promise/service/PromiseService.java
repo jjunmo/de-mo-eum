@@ -1,10 +1,9 @@
-package kr.co.promisemomo.module.member.service;
+package kr.co.promisemomo.module.promise.service;
 
-import kr.co.promisemomo.module.member.entity.Member;
-import kr.co.promisemomo.module.member.entity.Promise;
-import kr.co.promisemomo.module.member.entity.PromiseMember;
-import kr.co.promisemomo.module.member.repository.PromiseMemberRepository;
-import kr.co.promisemomo.module.member.repository.PromiseRepository;
+import kr.co.promisemomo.module.promise.entity.Promise;
+import kr.co.promisemomo.module.promise.entity.PromiseMember;
+import kr.co.promisemomo.module.promise.repository.PromiseMemberRepository;
+import kr.co.promisemomo.module.promise.repository.PromiseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
