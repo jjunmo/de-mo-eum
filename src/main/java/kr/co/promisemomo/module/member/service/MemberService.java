@@ -47,6 +47,7 @@ public class MemberService {
             }
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            // TODO: StringBuilder, String 차이점
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             StringBuilder result = new StringBuilder();
@@ -93,12 +94,15 @@ public class MemberService {
             // Member Save
             // setKakaoProfile
             Member memberParam = new Member();
-            memberParam.setKakaoProfile(kakaoProfile);
-            memberParam.setKakaoId(kakaoProfile.getK_kakaoId());
-            memberParam.setNickname(kakaoProfile.getK_nickname());
-            memberParam.setEmail(kakaoProfile.getK_email());
-            memberParam.setProfile_image_url(kakaoProfile.getK_profile_image_url());
-            memberParam.setThumbnail_image_url(kakaoProfile.getK_thumbnail_image_url());
+
+            // TODO : 리펙토링 가능
+            memberParam.settingKakaoProfile(kakaoProfile);
+//            memberParam.setKakaoProfile(kakaoProfile);
+//            memberParam.setKakaoId(kakaoProfile.getK_kakaoId());
+//            memberParam.setNickname(kakaoProfile.getK_nickname());
+//            memberParam.setEmail(kakaoProfile.getK_email());
+//            memberParam.setProfile_image_url(kakaoProfile.getK_profile_image_url());
+//            memberParam.setThumbnail_image_url(kakaoProfile.getK_thumbnail_image_url());
 
             return memberRepository.save(memberParam);
 

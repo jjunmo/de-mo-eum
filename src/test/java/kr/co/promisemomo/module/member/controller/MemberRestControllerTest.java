@@ -45,21 +45,23 @@ class MemberRestControllerTest {
     // 로그인을 실패했습니다. (토큰 오류) - 있을 수 없는 경우은데 그래도 혹시 몰라서 실패처리를 추가한 경우임
     // 성공
 
-    // TODO:수정중 필요한가 ?
-    @Test
-    @DisplayName("RedirectURI 테스트")
-    public void callBackkRedirectUrit() throws Exception{
-        mockMvc.perform(
-                get(KAKAO_LOGIN_URI))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(URL));
-    }
+    // TODO:수정중 필요한가 [테스트 하는 방법이 따로 있음 - 이건 보류]
+//    @Test
+//    @DisplayName("RedirectURI 테스트")
+//    public void callBackkRedirectUrit() throws Exception{
+//        mockMvc.perform(
+//                get(KAKAO_LOGIN_URI))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl(URL));
+//    }
 
 
-    // TODO:먼가 이상함..
+    // TODO: 먼가 이상함.. -> 확인!
     @Test
     @DisplayName(value = "빈 Code")
     public void kakaoEmptyCode() throws Exception {
+
+        // Error 내용이 Required request parameter 'code' for method parameter type String is not present
         mockMvc.perform(
                         get(URL)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -68,9 +70,8 @@ class MemberRestControllerTest {
                 .andDo(print());
     }
 
-    //TODO:맞나 ?
     @Test
-    @DisplayName(value="임의의 Code")
+    @DisplayName(value="임의의 Code (토큰 오류)")
     public void kakaoTrashCode() throws Exception {
         mockMvc.perform(
                 get(URL)

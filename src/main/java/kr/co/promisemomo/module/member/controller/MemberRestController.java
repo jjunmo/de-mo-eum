@@ -20,8 +20,13 @@ public class MemberRestController {
 
     //kauth.kakao.com/oauth/authorize?client_id=f398d5912c151f13e22b5fecfbd1f249&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code
     //Redirect URI=http://localhost:8080/oauth/kakao
+
+    // TODO 테스트 코드 실행시 Required request parameter
+    //  'code' for method parameter type String is not present 이라는 스프링 자체 오류가 나기
+    //  때문에 @RequestParam(defaultValue = "") 추가해줌
+
     @GetMapping("/oauth/kakao")
-    public HttpEntity<Object> kakaoCallback(@RequestParam String code) {
+    public HttpEntity<Object> kakaoCallback(@RequestParam(defaultValue = "") String code) {
 
         if (code == null || code.replaceAll(" ", "").equals("")){
             return ResponseEntity.badRequest().body("잘못된 접근입니다. (코드 오류)");

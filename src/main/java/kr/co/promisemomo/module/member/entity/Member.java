@@ -63,4 +63,14 @@ public class Member {
         this.createDate = LocalDateTime.now();
     }
 
+
+    public void settingKakaoProfile(KakaoProfile kakaoProfile) {
+        this.kakaoProfile = kakaoProfile;
+        this.kakaoId = kakaoProfile.getK_kakaoId();
+        this.nickname = kakaoProfile.getK_nickname();
+        this.email = kakaoProfile.getK_email();
+        this.profile_image_url = kakaoProfile.getK_profile_image_url();
+        this.thumbnail_image_url = kakaoProfile.getK_thumbnail_image_url();
+    }
+
 }
