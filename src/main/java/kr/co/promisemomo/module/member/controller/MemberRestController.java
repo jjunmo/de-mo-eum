@@ -24,7 +24,7 @@ public class MemberRestController {
     // 로그인을 실패했습니다. (카카오 정보 오류) - 코드 아무값 막 적어서 보내보기
     // 로그인을 실패했습니다. (토큰 오류) - 있을 수 없는 경우은데 그래도 혹시 몰라서 실패처리를 추가한 경우임
     // 성공
-    @GetMapping("/kakao")
+    @GetMapping("/oauth/kakao")
     public HttpEntity<Object> kakaoCallback(@RequestParam String code) {
 
         if (code == null || code.replaceAll(" ", "").equals("")){
@@ -37,7 +37,7 @@ public class MemberRestController {
         }
 
         // 추가적으로 로직 넣고
-        Member member = memberService.createKakaoUser(acces_token);
+        Member member = memberService.createMember(acces_token);
 
         // 실패
         if (member == null) {

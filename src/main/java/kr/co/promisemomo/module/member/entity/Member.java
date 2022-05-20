@@ -24,6 +24,9 @@ public class Member {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "profile_image_url")
     private String profile_image_url;
 

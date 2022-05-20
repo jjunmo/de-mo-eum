@@ -24,13 +24,15 @@ public class KakaoProfile {
     @Column(name = "k_kakaoId")
     private Long k_kakaoId;
 
-    @Column(name = "k_nickname")
+    @Column(name = "k_nickname" ,nullable = true)
     private String k_nickname;
 
-    @Column(name = "k_profile_image_url")
+    @Column(name = "k_profile_image_url",nullable = true)
     private String k_profile_image_url;
 
-    @Column(name = "k_thumbnail_image_url")
+    @Column(name = "k_thumbnail_image_url",nullable = true)
     private String k_thumbnail_image_url;
 
+    @Column(name = "k_email")
+    private String k_email;
 }
