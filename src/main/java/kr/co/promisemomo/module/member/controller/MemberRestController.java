@@ -18,12 +18,8 @@ public class MemberRestController {
 
     public final MemberService memberService;
 
+    //kauth.kakao.com/oauth/authorize?client_id=f398d5912c151f13e22b5fecfbd1f249&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code
     //Redirect URI=http://localhost:8080/oauth/kakao
-    // [ 테스트 코드 작성 ]
-    // 잘못된 접근입니다. (코드 오류) - 코드 값 안적어서 보내보기
-    // 로그인을 실패했습니다. (카카오 정보 오류) - 코드 아무값 막 적어서 보내보기
-    // 로그인을 실패했습니다. (토큰 오류) - 있을 수 없는 경우은데 그래도 혹시 몰라서 실패처리를 추가한 경우임
-    // 성공
     @GetMapping("/oauth/kakao")
     public HttpEntity<Object> kakaoCallback(@RequestParam String code) {
 
@@ -33,7 +29,7 @@ public class MemberRestController {
 
         String acces_token =oauthService.getKakaoAccessToken(code);
         if (acces_token.equals("fail")) {
-            return ResponseEntity.badRequest().body("로그인을 실패했습니다. (카카오 정보 오류)");
+            return ResponseEntity.badRequest().body("토큰을 받아오는데 오류가 발생");
         }
 
         // 추가적으로 로직 넣고
