@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,8 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("dev")
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 class MemberRestControllerTest {
-
-    private final String KAKAO_LOGIN_URI = "kauth.kakao.com/oauth/authorize?client_id=f398d5912c151f13e22b5fecfbd1f249&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code";
+    /*보류*/
+    //private final String KAKAO_LOGIN_URI = "kauth.kakao.com/oauth/authorize?client_id=f398d5912c151f13e22b5fecfbd1f249&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code";
 
     private final String URL = "/oauth/kakao";
 
@@ -81,4 +82,15 @@ class MemberRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName(value="회원정보 수정")
+    public void 회원정보수정() throws Exception{
+        mockMvc.perform(
+                put("/member/{id},1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.ALL))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+            }
 }

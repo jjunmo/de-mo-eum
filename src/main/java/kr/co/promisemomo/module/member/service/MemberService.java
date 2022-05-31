@@ -8,6 +8,7 @@ import kr.co.promisemomo.module.member.repository.KakaoProfileRepository;
 import kr.co.promisemomo.module.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -15,13 +16,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class MemberService {
 
-    // TODO: 이것은 잘못된 코드
     private final MemberRepository memberRepository;
     private final KakaoProfileRepository kakaoProfileRepository;
 
@@ -47,7 +50,7 @@ public class MemberService {
             }
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            // TODO: StringBuilder, String 차이점
+            // TODO: StringBuilder, String 차이점 (https://proud-alder-ead.notion.site/String-StringBuilder-StringBuffer-be2a8c5d43ec4afe8cd90a42f2ffd9b9)
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             StringBuilder result = new StringBuilder();
@@ -80,6 +83,9 @@ public class MemberService {
             log.info("email :" +email);
 
             br.close();
+            
+            
+            // TODO: 기존에 가입된 아이디일경우 유효성 검사 코드가 필요할것같은데 어디에 작성하는게 좋을지?
 
             // KakaoProfile Save
             KakaoProfile kakaoProfileParam = new KakaoProfile();
@@ -88,7 +94,7 @@ public class MemberService {
             kakaoProfileParam.setK_email(email);
             kakaoProfileParam.setK_profile_image_url(profile_image);
             kakaoProfileParam.setK_profile_image_url(thumbnail_image);
-
+            
             KakaoProfile kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
 
             // Member Save
@@ -97,12 +103,6 @@ public class MemberService {
 
             // TODO : 리펙토링 가능
             memberParam.settingKakaoProfile(kakaoProfile);
-//            memberParam.setKakaoProfile(kakaoProfile);
-//            memberParam.setKakaoId(kakaoProfile.getK_kakaoId());
-//            memberParam.setNickname(kakaoProfile.getK_nickname());
-//            memberParam.setEmail(kakaoProfile.getK_email());
-//            memberParam.setProfile_image_url(kakaoProfile.getK_profile_image_url());
-//            memberParam.setThumbnail_image_url(kakaoProfile.getK_thumbnail_image_url());
 
             return memberRepository.save(memberParam);
 
@@ -112,5 +112,48 @@ public class MemberService {
             return null;
         }
     }
+
+    public List<Member> getAllMember(){
+
+        try{
+            List<Member> members = memberRepository.findAll();
+            List<Member> customMember = new ArrayList<>();
+            members.stream().forEach(e->{
+                Member member = new Member();
+                BeanUtils.copyProperties(e,member);
+                customMember.add(member);
+            });
+            return customMember;
+
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    public void updateMember(Long id , Member requestmember){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(()->{
+                        return new IllegalArgumentException("없는 아이디");
+                        });
+        member.setNickname(requestmember.getNickname());
+        member.setEmail(requestmember.getEmail());
+        member.setUpdateDate(LocalDateTime.now());
+    }
+
+    public String removeMember(Member member){
+        try{
+            if(memberRepository.existsById(member.getId())){
+                memberRepository.delete(member);
+                return "아이디 삭제 성공.";
+            }else{
+                return "아이디가 없다.";
+            }
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+
+
 
 }

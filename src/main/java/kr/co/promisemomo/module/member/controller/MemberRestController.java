@@ -6,9 +6,7 @@ import kr.co.promisemomo.module.member.service.OauthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +31,8 @@ public class MemberRestController {
         }
 
         String acces_token =oauthService.getKakaoAccessToken(code);
-        if (acces_token.equals("fail")) {
-            return ResponseEntity.badRequest().body("토큰을 받아오는데 오류가 발생");
+            if (acces_token.equals("fail")) {
+                return ResponseEntity.badRequest().body("토큰을 받아오는데 오류가 발생");
         }
 
         // 추가적으로 로직 넣고
@@ -48,6 +46,13 @@ public class MemberRestController {
         // 성공
         return ResponseEntity.ok(member);
     }
+
+    @PutMapping("/member/{id}")
+    public HttpEntity<Object> updateMember(@PathVariable("id") Long id , @RequestBody Member member){
+        memberService.updateMember(id, member);
+        return ResponseEntity.ok(member);
+    }
+
 
 
 }
