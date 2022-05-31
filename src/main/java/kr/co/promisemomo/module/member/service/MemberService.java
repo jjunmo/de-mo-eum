@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -130,6 +131,11 @@ public class MemberService {
         }
     }
 
+    public List<Member> getMember(Long id){
+        return memberRepository.findAllById(Collections.singleton(id));
+    }
+
+    // TODO : 어떤식으로 작성하는게 좋을지 ..?
     public void updateMember(Long id , Member requestmember){
         Member member = memberRepository.findById(id)
                 .orElseThrow(()->{
@@ -139,6 +145,17 @@ public class MemberService {
         member.setEmail(requestmember.getEmail());
         member.setUpdateDate(LocalDateTime.now());
     }
+
+    public void updateMember2(Member member){
+        try{
+            if(memberRepository.existsById(member.getId())){
+                memberRepository.save(member);
+            }
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
 
     public String removeMember(Member member){
         try{
@@ -152,8 +169,6 @@ public class MemberService {
             throw e;
         }
     }
-
-
 
 
 }

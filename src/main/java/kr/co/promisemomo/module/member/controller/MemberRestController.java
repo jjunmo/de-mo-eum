@@ -8,6 +8,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberRestController {
@@ -53,6 +55,21 @@ public class MemberRestController {
         return ResponseEntity.ok(member);
     }
 
+    @GetMapping("/members")
+    public List<Member> getAllMembers(){
+        return memberService.getAllMember();
+    }
+
+    @GetMapping("/members/{id}")
+    public List<Member> getMember(@PathVariable("id") Long id){
+        return memberService.getMember(id);
+    }
+
+    @DeleteMapping("/members/{id}")
+    public HttpEntity<Object> deleteMember(@PathVariable("id") Long id , @RequestBody Member member){
+        memberService.removeMember(member);
+        return ResponseEntity.ok(member);
+    }
 
 
 }

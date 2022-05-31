@@ -83,6 +83,8 @@ class MemberRestControllerTest {
                 .andDo(print());
     }
 
+
+    // TODO : 테스트코드 작성 잘모르겠음.. 정보를 저장한 이후 테스트 적용해야할것같은데 Member에 id만 임의로 값 적용해서 테스트하면 될지?
     @Test
     @DisplayName(value="회원정보 수정")
     public void 회원정보수정() throws Exception{
