@@ -32,13 +32,13 @@ public class MemberRestController {
             return ResponseEntity.badRequest().body("잘못된 접근입니다. (코드 오류)");
         }
 
-        String acces_token = oauthService.getKakaoAccessToken(code);
-        if (acces_token.equals("fail")) {
+        String access_token = oauthService.getKakaoAccessToken(code);
+        if (access_token.equals("fail")) {
             return ResponseEntity.badRequest().body("토큰을 받아오는데 오류가 발생");
         }
 
         // 추가적으로 로직 넣고
-        Member member = memberService.createMember(acces_token);
+        Member member = memberService.createMember(access_token);
 
         // 실패
         if (member == null) {
@@ -50,8 +50,14 @@ public class MemberRestController {
     }
 
     @PutMapping("/member/{id}")
-    public HttpEntity<Object> updateMember(@PathVariable("id") Long id, @RequestBody Member member) {
-        memberService.updateMember(id, member);
+    public HttpEntity<Object> updateMember(@PathVariable("id") Long id, @RequestBody Member paramMember) {
+        Member member = memberService.updateMember(id, paramMember);
+
+        // Code 추가
+        if (member == null) {
+            return ResponseEntity.badRequest().body("존재하지 않은 회원입니다.");
+        }
+
         return ResponseEntity.ok(member);
     }
 

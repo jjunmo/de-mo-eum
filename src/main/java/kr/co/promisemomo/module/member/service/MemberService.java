@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -51,7 +52,7 @@ public class MemberService {
             }
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            // TODO: StringBuilder, String 차이점 (https://proud-alder-ead.notion.site/String-StringBuilder-StringBuffer-be2a8c5d43ec4afe8cd90a42f2ffd9b9)
+            // StringBuilder, String 차이점 (https://proud-alder-ead.notion.site/String-StringBuilder-StringBuffer-be2a8c5d43ec4afe8cd90a42f2ffd9b9)
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
             StringBuilder result = new StringBuilder();
@@ -86,7 +87,7 @@ public class MemberService {
             br.close();
             
             
-            // TODO: 기존에 가입된 아이디일경우 유효성 검사 코드가 필요할것같은데 어디에 작성하는게 좋을지?
+            // TODO: 기존에 가입된 아이디일경우 유효성 검사 코드가 필요할것같은데 어디에 작성하는게 좋을지? (수정)
 
             // KakaoProfile Save
             KakaoProfile kakaoProfileParam = new KakaoProfile();
@@ -95,14 +96,19 @@ public class MemberService {
             kakaoProfileParam.setK_email(email);
             kakaoProfileParam.setK_profile_image_url(profile_image);
             kakaoProfileParam.setK_profile_image_url(thumbnail_image);
-            
-            KakaoProfile kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
+
+            // 여기서 카카오 고유의 아이디 값으로 데이터베이스에 값을 확인 후 있다면  (2)
+            KakaoProfile kakaoProfile;
+            if (true) { // 값이 없다면
+                kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
+            } // 있으면 Save는 안해도 됨
+
+            // (2) 카카오 프로필 테이블에 데이터가 있더라도 회원 테이블에 데이터가 없으면 문제 없음
+            // 그런데 데이터가 있을 경우 return 해서 error 처리 (이미 존재하는 아이디 Or 로그인 처리) 해줘야함
 
             // Member Save
             // setKakaoProfile
             Member memberParam = new Member();
-
-            // TODO : 리펙토링 가능
             memberParam.settingKakaoProfile(kakaoProfile);
 
             return memberRepository.save(memberParam);
@@ -114,37 +120,47 @@ public class MemberService {
         }
     }
 
-    // TODO : 카카오계정 생성 이후 POSTMAN 확인시  ClassCastException 발생
+    // TODO : 카카오계정 생성 이후 POSTMAN 확인시  ClassCastException 발생 (수정)
+    // 새로운 회원 리스트를 만들어서 forEach로 똑같은 데이터를 넣은 후 리턴하는 이유를 모르겠습니다.
     public List<Member> getAllMember(){
+//        try{
+//            List<Member> members = memberRepository.findAll();
+//            List<Member> customMember = new ArrayList<>();
+//            members.forEach(e->{
+//                Member member = new Member();
+//                BeanUtils.copyProperties(e, member);
+//                customMember.add(member);
+//            });
+//            return customMember;
+//
+//        }catch (ClassCastException e){
+//            throw e;
+//        }
 
-        try{
-            List<Member> members = memberRepository.findAll();
-            List<Member> customMember = new ArrayList<>();
-            members.stream().forEach(e->{
-                Member member = new Member();
-                BeanUtils.copyProperties(e,member);
-                customMember.add(member);
-            });
-            return customMember;
-
-        }catch (ClassCastException e){
-            throw e;
-        }
+        return memberRepository.findAll();
     }
 
     public List<Member> getMember(Long id){
         return memberRepository.findAllById(Collections.singleton(id));
     }
 
-    // TODO : 어떤식으로 작성하는게 좋을지 ..?
-    public void updateMember(Long id , Member requestmember){
-        Member member = memberRepository.findById(id)
-                .orElseThrow(()->{
-                        return new IllegalArgumentException("없는 아이디");
-                        });
+    // TODO : 어떤식으로 작성하는게 좋을지 ..? (수정)
+    public Member updateMember(Long id , Member requestmember){
+//        Member member = memberRepository.findById(id)
+//                .orElseThrow(()-> new IllegalArgumentException("없는 아이디"));
+//        member.setNickname(requestmember.getNickname());
+//        member.setEmail(requestmember.getEmail());
+//        member.setUpdateDate(LocalDateTime.now());
+
+        // Code 변경
+        Optional<Member> memberOptional = memberRepository.findById(id);
+        if (memberOptional.isEmpty()) return null;
+
+        Member member = memberOptional.get();
         member.setNickname(requestmember.getNickname());
         member.setEmail(requestmember.getEmail());
         member.setUpdateDate(LocalDateTime.now());
+        return member;
     }
 
     public void updateMember2(Member member){

@@ -3,6 +3,7 @@ package kr.co.promisemomo.module.member.controller;
 import com.sun.xml.bind.v2.TODO;
 import kr.co.promisemomo.module.member.service.MemberService;
 import kr.co.promisemomo.module.member.service.OauthService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -39,6 +39,11 @@ class MemberRestControllerTest {
     @Autowired
     private MemberService memberService;
 
+    @BeforeAll
+    public void memberSave(){
+
+    }
+
 
     // MemberRestController [테스트 코드 작성]
     // 잘못된 접근입니다. (코드 오류) - 코드 값 안적어서 보내보기
@@ -57,7 +62,6 @@ class MemberRestControllerTest {
 //    }
 
 
-    // TODO: 먼가 이상함.. -> 확인!
     @Test
     @DisplayName(value = "빈 Code")
     public void kakaoEmptyCode() throws Exception {
@@ -84,12 +88,16 @@ class MemberRestControllerTest {
     }
 
 
-    // TODO : 테스트코드 작성 잘모르겠음.. 정보를 저장한 이후 테스트 적용해야할것같은데 Member에 id만 임의로 값 적용해서 테스트하면 될지?
+    // TODO : 테스트코드 작성 잘모르겠음.. 정보를 저장한 이후 테스트 적용해야할것같은데 Member에 id만 임의로 값 적용해서 테스트하면 될지? (수정)
     @Test
     @DisplayName(value="회원정보 수정")
     public void 회원정보수정() throws Exception{
+
+        // memberSave() 메소드에서 먼저 회원 저장
+        // @BeforeAll가 테스트 코드에서 뭔지 찾아보면 알수있음
+
         mockMvc.perform(
-                put("/member/{id},1")
+                put("/member/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.ALL))
                 .andExpect(status().isBadRequest())
