@@ -28,13 +28,13 @@ public class MemberRestController {
     @GetMapping("/oauth/kakao")
     public HttpEntity<Object> kakaoCallback(@RequestParam(defaultValue = "") String code) {
 
-        if (code == null || code.replaceAll(" ", "").equals("")){
+        if (code == null || code.replaceAll(" ", "").equals("")) {
             return ResponseEntity.badRequest().body("잘못된 접근입니다. (코드 오류)");
         }
 
-        String acces_token =oauthService.getKakaoAccessToken(code);
-            if (acces_token.equals("fail")) {
-                return ResponseEntity.badRequest().body("토큰을 받아오는데 오류가 발생");
+        String acces_token = oauthService.getKakaoAccessToken(code);
+        if (acces_token.equals("fail")) {
+            return ResponseEntity.badRequest().body("토큰을 받아오는데 오류가 발생");
         }
 
         // 추가적으로 로직 넣고
@@ -50,23 +50,23 @@ public class MemberRestController {
     }
 
     @PutMapping("/member/{id}")
-    public HttpEntity<Object> updateMember(@PathVariable("id") Long id , @RequestBody Member member){
+    public HttpEntity<Object> updateMember(@PathVariable("id") Long id, @RequestBody Member member) {
         memberService.updateMember(id, member);
         return ResponseEntity.ok(member);
     }
 
     @GetMapping("/members")
-    public List<Member> getAllMembers(){
+    public List<Member> getAllMembers() {
         return memberService.getAllMember();
     }
 
     @GetMapping("/members/{id}")
-    public List<Member> getMember(@PathVariable("id") Long id){
+    public List<Member> getMember(@PathVariable("id") Long id) {
         return memberService.getMember(id);
     }
 
     @DeleteMapping("/members/{id}")
-    public HttpEntity<Object> deleteMember(@PathVariable("id") Long id , @RequestBody Member member){
+    public HttpEntity<Object> deleteMember(@PathVariable("id") Long id, @RequestBody Member member) {
         memberService.removeMember(member);
         return ResponseEntity.ok(member);
     }

@@ -114,6 +114,7 @@ public class MemberService {
         }
     }
 
+    // TODO : 카카오계정 생성 이후 POSTMAN 확인시  ClassCastException 발생
     public List<Member> getAllMember(){
 
         try{
@@ -126,7 +127,7 @@ public class MemberService {
             });
             return customMember;
 
-        }catch (Exception e){
+        }catch (ClassCastException e){
             throw e;
         }
     }
