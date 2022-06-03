@@ -64,8 +64,8 @@ public class MemberService {
 
             JsonElement element = JsonParser.parseString(result.toString());
 
-            long id = element.getAsJsonObject().get("id").getAsLong();
-            log.info("id : " + id);
+            long kakaoId = element.getAsJsonObject().get("id").getAsLong();
+            log.info("카카오 id : " + kakaoId);
 
             String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
             log.info("nickname : " + nickname);
@@ -91,7 +91,7 @@ public class MemberService {
 
             // KakaoProfile Save
             KakaoProfile kakaoProfileParam = new KakaoProfile();
-            kakaoProfileParam.setK_kakaoId(id);
+            kakaoProfileParam.setK_kakaoId(kakaoId);
             kakaoProfileParam.setK_nickname(nickname);
             kakaoProfileParam.setK_email(email);
             kakaoProfileParam.setK_profile_image_url(profile_image);
@@ -99,24 +99,23 @@ public class MemberService {
 
             // 여기서 카카오 고유의 아이디 값으로 데이터베이스에 값을 확인 후 있다면  (2)
             KakaoProfile kakaoProfile;
+
+
+
+
             if (true) { // 값이 없다면
                 kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
             } // 있으면 Save는 안해도 됨
 
-
-
-
             // (2) 카카오 프로필 테이블에 데이터가 있더라도 회원 테이블에 데이터가 없으면 문제 없음
             // 그런데 데이터가 있을 경우 return 해서 error 처리 (이미 존재하는 아이디 Or 로그인 처리) 해줘야함
-            if(kakaoProfileRepository.findByK_kakaoId(kakaoProfileParam.getK_kakaoId())){
 
-                return memberRepository.findByKakaoId(kakaoProfileParam.getK_kakaoId());
-            }
 
             // Member Save
             // setKakaoProfile
             Member memberParam = new Member();
             memberParam.settingKakaoProfile(kakaoProfile);
+            log.info("새로운 계정으로 생성");
 
             return memberRepository.save(memberParam);
 
