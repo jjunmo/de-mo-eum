@@ -103,8 +103,15 @@ public class MemberService {
                 kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
             } // 있으면 Save는 안해도 됨
 
+
+
+
             // (2) 카카오 프로필 테이블에 데이터가 있더라도 회원 테이블에 데이터가 없으면 문제 없음
             // 그런데 데이터가 있을 경우 return 해서 error 처리 (이미 존재하는 아이디 Or 로그인 처리) 해줘야함
+            if(kakaoProfileRepository.findByK_kakaoId(kakaoProfileParam.getK_kakaoId())){
+
+                return memberRepository.findByKakaoId(kakaoProfileParam.getK_kakaoId());
+            }
 
             // Member Save
             // setKakaoProfile
@@ -121,6 +128,7 @@ public class MemberService {
     }
 
     // TODO : 카카오계정 생성 이후 POSTMAN 확인시  ClassCastException 발생 (수정)
+    // Entity 연관관계 설정 수정후 정상작동 확인
     // 새로운 회원 리스트를 만들어서 forEach로 똑같은 데이터를 넣은 후 리턴하는 이유를 모르겠습니다.
     public List<Member> getAllMember(){
 //        try{

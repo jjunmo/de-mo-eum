@@ -35,7 +35,7 @@ public class Member {
 
     //카카오프로필정보
     @OneToOne
-    @JoinColumn(name = "kakaoProfile", referencedColumnName = "k_kakaoId")
+    @JoinColumn(name = "kakaoProfile", referencedColumnName = "id")
     private KakaoProfile kakaoProfile;
 
     // 하나의 약속에 여러명의 멤버
