@@ -21,18 +21,18 @@ public class KakaoProfile {
 
     //사용자 프로퍼티 추가
 
-    @Column(name = "k_kakaoId")
-    private Long k_kakaoId;
+    @Column(name = "kpKakaoId")
+    private Long kpKakaoId;
 
-    @Column(name = "k_nickname" ,nullable = true)
-    private String k_nickname;
+    @Column(name = "kpNickname" ,nullable = true)
+    private String kpNickname;
 
-    @Column(name = "k_profile_image_url",nullable = true)
-    private String k_profile_image_url;
+    @Column(name = "kpProfile_image_url",nullable = true)
+    private String kpProfile_image_url;
 
-    @Column(name = "k_thumbnail_image_url",nullable = true)
-    private String k_thumbnail_image_url;
+    @Column(name = "kpThumbnail_image_url",nullable = true)
+    private String kpThumbnail_image_url;
 
-    @Column(name = "k_email")
-    private String k_email;
+    @Column(name = "kpEmail")
+    private String kpEmail;
 }

@@ -66,11 +66,11 @@ public class Member {
 
     public void settingKakaoProfile(KakaoProfile kakaoProfile) {
         this.kakaoProfile = kakaoProfile;
-        this.kakaoId = kakaoProfile.getK_kakaoId();
-        this.nickname = kakaoProfile.getK_nickname();
-        this.email = kakaoProfile.getK_email();
-        this.profile_image_url = kakaoProfile.getK_profile_image_url();
-        this.thumbnail_image_url = kakaoProfile.getK_thumbnail_image_url();
+        this.kakaoId = kakaoProfile.getKpKakaoId();
+        this.nickname = kakaoProfile.getKpNickname();
+        this.email = kakaoProfile.getKpEmail();
+        this.profile_image_url = kakaoProfile.getKpProfile_image_url();
+        this.thumbnail_image_url = kakaoProfile.getKpThumbnail_image_url();
     }
 
 }

@@ -91,34 +91,33 @@ public class MemberService {
 
             // KakaoProfile Save
             KakaoProfile kakaoProfileParam = new KakaoProfile();
-            kakaoProfileParam.setK_kakaoId(kakaoId);
-            kakaoProfileParam.setK_nickname(nickname);
-            kakaoProfileParam.setK_email(email);
-            kakaoProfileParam.setK_profile_image_url(profile_image);
-            kakaoProfileParam.setK_profile_image_url(thumbnail_image);
+            kakaoProfileParam.setKpKakaoId(kakaoId);
+            kakaoProfileParam.setKpNickname(nickname);
+            kakaoProfileParam.setKpEmail(email);
+            kakaoProfileParam.setKpProfile_image_url(profile_image);
+            kakaoProfileParam.setKpThumbnail_image_url(thumbnail_image);
 
             // 여기서 카카오 고유의 아이디 값으로 데이터베이스에 값을 확인 후 있다면  (2)
             KakaoProfile kakaoProfile;
 
+            List<KakaoProfile> kakaoProfileList =kakaoProfileRepository.findBykpKakaoId(kakaoId);
 
-
-
-            if (true) { // 값이 없다면
+            if (kakaoProfileList.isEmpty()) { // 값이 없다면
                 kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
-            } // 있으면 Save는 안해도 됨
+                // Member Save
+                // setKakaoProfile
+                Member memberParam = new Member();
+                memberParam.settingKakaoProfile(kakaoProfile);
+                log.info("새로운 계정으로 생성");
+
+                return memberRepository.save(memberParam);
+            }else{
+                log.info("이미 있는 아이디입니다.");
+                return memberRepository.findByKakaoId(kakaoId);
+            }
 
             // (2) 카카오 프로필 테이블에 데이터가 있더라도 회원 테이블에 데이터가 없으면 문제 없음
             // 그런데 데이터가 있을 경우 return 해서 error 처리 (이미 존재하는 아이디 Or 로그인 처리) 해줘야함
-
-
-            // Member Save
-            // setKakaoProfile
-            Member memberParam = new Member();
-            memberParam.settingKakaoProfile(kakaoProfile);
-            log.info("새로운 계정으로 생성");
-
-            return memberRepository.save(memberParam);
-
 
         } catch (IOException e) {
             e.printStackTrace();
