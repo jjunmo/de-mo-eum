@@ -2,6 +2,7 @@ package kr.co.promisemomo.module.member.entity;
 
 import kr.co.promisemomo.module.member.role.RoleType;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,6 +33,9 @@ public class Member {
 
     @Column(name = "thumbnail_image_url")
     private String thumbnail_image_url;
+
+    @ColumnDefault("'N'")
+    private String deleteCheck;
 
     //카카오프로필정보
     @OneToOne

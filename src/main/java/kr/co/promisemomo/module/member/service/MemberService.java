@@ -169,29 +169,12 @@ public class MemberService {
         return member;
     }
 
-    public void updateMember2(Member member){
-        try{
-            if(memberRepository.existsById(member.getId())){
-                memberRepository.save(member);
-            }
-        }catch (Exception e){
-            throw e;
-        }
+    public String removeMember(Long id){
+        Optional<Member> memberOptional =memberRepository.findById(id);
+            if(memberOptional.isEmpty()) return "존재하지않는 아이디임.";
+
+            memberRepository.deleteById(id);
+            return "아이디 삭제";
     }
-
-
-    public String removeMember(Member member){
-        try{
-            if(memberRepository.existsById(member.getId())){
-                memberRepository.delete(member);
-                return "아이디 삭제 성공.";
-            }else{
-                return "아이디가 없다.";
-            }
-        }catch (Exception e){
-            throw e;
-        }
-    }
-
 
 }

@@ -48,7 +48,8 @@ public class MemberRestController {
         // 성공
         return ResponseEntity.ok(member);
     }
-
+    
+    // 사용자
     @PutMapping("/member/{id}")
     public HttpEntity<Object> updateMember(@PathVariable("id") Long id, @RequestBody Member paramMember) {
         Member member = memberService.updateMember(id, paramMember);
@@ -61,20 +62,23 @@ public class MemberRestController {
         return ResponseEntity.ok(member);
     }
 
+    // 사용자 & 관리자
     @GetMapping("/members")
     public List<Member> getAllMembers() {
         return memberService.getAllMember();
     }
 
+    //관리자
     @GetMapping("/members/{id}")
     public List<Member> getMember(@PathVariable("id") Long id) {
         return memberService.getMember(id);
     }
-
+    
+    // 사용자 & 관리자
     @DeleteMapping("/members/{id}")
-    public HttpEntity<Object> deleteMember(@PathVariable("id") Long id, @RequestBody Member member) {
-        memberService.removeMember(member);
-        return ResponseEntity.ok(member);
+    public HttpEntity<Object> deleteMember(@PathVariable("id") Long id) {
+        memberService.removeMember(id);
+        return ResponseEntity.ok("계정 삭제");
     }
 
 
