@@ -89,13 +89,10 @@ public class MemberService {
             kakaoProfileParam.setKpThumbnail_image_url(thumbnail_image);
 
             // 여기서 카카오 고유의 아이디 값으로 데이터베이스에 값을 확인 후 있다면  (2)
-            List<KakaoProfile> kakaoProfileList =kakaoProfileRepository.findBykpKakaoId(kakaoId);
-
-            if (kakaoProfileList.isEmpty()) { // 값이 없다면
+            Optional<KakaoProfile> kakaoProfileOptional =kakaoProfileRepository.findBykpKakaoId(kakaoId);
+            if (kakaoProfileOptional.isEmpty()) { // 값이 없다면
 
                 KakaoProfile kakaoProfile = kakaoProfileRepository.save(kakaoProfileParam);
-
-
                 log.info("새로운 계정으로 생성");
                 // Member Save
                 // setKakaoProfile
@@ -103,8 +100,16 @@ public class MemberService {
                 memberParam.settingKakaoProfile(kakaoProfile);
                 return memberRepository.save(memberParam);
             }else{
-                log.info("이미 있는 아이디입니다.");
-                return memberRepository.findByKakaoId(kakaoId);
+
+                Optional<Member> memberOptional = memberRepository.findByKakaoIdAndDeleteCheck(kakaoId, "N");
+                if (memberOptional.isPresent()) {
+                    return memberOptional.get();
+                } else {
+                    KakaoProfile kakaoProfile = kakaoProfileOptional.get();
+                    Member memberParam = new Member();
+                    memberParam.settingKakaoProfile(kakaoProfile);
+                    return memberRepository.save(memberParam);
+                }
             }
 
             // (2) 카카오 프로필 테이블에 데이터가 있더라도 회원 테이블에 데이터가 없으면 문제 없음
@@ -115,16 +120,20 @@ public class MemberService {
         }
     }
     public List<Member> getAllMember(){
+        return memberRepository.findByDeleteCheck("N");
+    }
+
+    public List<Member> getAdminAllMember(){
         return memberRepository.findAll();
     }
 
     public Optional<Member> getMember(Long id){
-        return memberRepository.findById(id);
+        return memberRepository.findByIdAndDeleteCheck(id, "N");
     }
 
     @Transactional
     public Member updateMember(Long id , Member requestMember){
-        Optional<Member> memberOptional = memberRepository.findById(id);
+        Optional<Member> memberOptional = memberRepository.findByIdAndDeleteCheck(id, "N");
         if (memberOptional.isEmpty()) return null;
 
         Member member = memberOptional.get();
@@ -137,7 +146,11 @@ public class MemberService {
     public String removeMember(Long id){
         Optional<Member> memberOptional =memberRepository.findById(id);
         if(memberOptional.isEmpty()) return "존재하지않는 아이디임.";
-        memberRepository.deleteById(id);
+
+        Member member = memberOptional.get();
+        if (member.getDeleteCheck().equals("Y")) return "이미 삭제된 아이디임.";
+
+        member.setDeleteCheck("Y");
         return "아이디 삭제";
     }
 

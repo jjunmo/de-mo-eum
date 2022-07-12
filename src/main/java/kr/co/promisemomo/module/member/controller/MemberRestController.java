@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberRestController {
 
     public final OauthService oauthService;
@@ -46,7 +47,7 @@ public class MemberRestController {
     }
     
     // 사용자
-    @PutMapping("/member/{id}")
+    @PutMapping("/{id}")
     public HttpEntity<Object> updateMember(@PathVariable("id") Long id, @RequestBody Member paramMember) {
         Member member = memberService.updateMember(id, paramMember);
 
@@ -58,13 +59,13 @@ public class MemberRestController {
     }
 
     // 사용자 & 관리자
-    @GetMapping("/members")
+    @GetMapping
     public List<Member> getAllMembers() {
         return memberService.getAllMember();
     }
 
     //관리자
-    @GetMapping("/members/{id}")
+    @GetMapping("/{id}")
     public HttpEntity<Object> getMember(@PathVariable("id") Long id) {
         Optional<Member> memberOptional = memberService.getMember(id);
         if (memberOptional.isEmpty()) {
@@ -74,7 +75,7 @@ public class MemberRestController {
     }
     
     // 사용자 & 관리자
-    @DeleteMapping("/members/{id}")
+    @DeleteMapping("/{id}")
     public HttpEntity<Object> deleteMember(@PathVariable("id") Long id) {
         return ResponseEntity.ok(memberService.removeMember(id));
     }

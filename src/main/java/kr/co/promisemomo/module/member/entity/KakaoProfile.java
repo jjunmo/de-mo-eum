@@ -22,7 +22,7 @@ public class KakaoProfile extends BaseTime {
 
     //사용자 프로퍼티 추가
 
-    @Column(name = "kpKakaoId")
+    @Column(name = "kpKakaoId", unique = true)
     private Long kpKakaoId;
 
     @Column(name = "kpNickname" ,nullable = true)
