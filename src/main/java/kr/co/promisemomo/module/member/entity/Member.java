@@ -1,5 +1,6 @@
 package kr.co.promisemomo.module.member.entity;
 
+import kr.co.promisemomo.module.common.BaseTime;
 import kr.co.promisemomo.module.member.role.RoleType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "member")
-public class Member {
+public class Member extends BaseTime {
 
     @Id
     @GeneratedValue
@@ -55,17 +56,17 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    @Column(name = "create_date")
-//    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDateTime createDate;
-
-    @Column(name = "update_date")
-//    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDateTime updateDate;
-    @PrePersist // DB에 INSERT 되기 직전에 실행. 즉 DB에 값을 넣으면 자동으로 실행됨
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
+//    @Column(name = "create_date")
+////    @DateTimeFormat(pattern = "yyyy-mm-dd")
+//    private LocalDateTime createDate;
+//
+//    @Column(name = "update_date")
+////    @DateTimeFormat(pattern = "yyyy-mm-dd")
+//    private LocalDateTime updateDate;
+//    @PrePersist // DB에 INSERT 되기 직전에 실행. 즉 DB에 값을 넣으면 자동으로 실행됨
+//    public void createDate() {
+//        this.createDate = LocalDateTime.now();
+//    }
 
 
     public void settingKakaoProfile(KakaoProfile kakaoProfile) {

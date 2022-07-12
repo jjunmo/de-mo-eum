@@ -1,7 +1,9 @@
 package kr.co.promisemomo.module.member.service;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import kr.co.promisemomo.module.common.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,9 @@ import java.net.URL;
 @Service
 @Slf4j
 public class OauthService {
+
     public String getKakaoAccessToken (String code) {
+
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -43,27 +47,15 @@ public class OauthService {
             }
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = "";
-            StringBuilder result = new StringBuilder();
+            JsonElement element = Util.getJsonElement(conn);
+            JsonObject asJsonObject = element.getAsJsonObject();
 
-            while ((line = br.readLine()) != null) {
-                result.append(line);
-            }
-            log.info("response body : " + result);
-
-            //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-            //deprecated
-            //JsonParser parser = new JsonParser();
-            JsonElement element = JsonParser.parseString(result.toString());
-
-            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+            access_Token = asJsonObject.get("access_token").getAsString();
+            refresh_Token = asJsonObject.get("refresh_token").getAsString();
 
             log.info("access_token : " + access_Token);
             log.info("refresh_token : " + refresh_Token);
 
-            br.close();
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();

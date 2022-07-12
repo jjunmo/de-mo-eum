@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,11 +21,6 @@ public class MemberRestController {
 
     //kauth.kakao.com/oauth/authorize?client_id=f398d5912c151f13e22b5fecfbd1f249&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code
     //Redirect URI=http://localhost:8080/oauth/kakao
-
-    // TODO 테스트 코드 실행시 Required request parameter
-    //  'code' for method parameter type String is not present 이라는 스프링 자체 오류가 나기
-    //  때문에 @RequestParam(defaultValue = "") 추가해줌
-
     @GetMapping("/oauth/kakao")
     public HttpEntity<Object> kakaoCallback(@RequestParam(defaultValue = "") String code) {
 
@@ -58,7 +54,6 @@ public class MemberRestController {
         if (member == null) {
             return ResponseEntity.badRequest().body("존재하지 않은 회원입니다.");
         }
-
         return ResponseEntity.ok(member);
     }
 
@@ -70,15 +65,18 @@ public class MemberRestController {
 
     //관리자
     @GetMapping("/members/{id}")
-    public List<Member> getMember(@PathVariable("id") Long id) {
-        return memberService.getMember(id);
+    public HttpEntity<Object> getMember(@PathVariable("id") Long id) {
+        Optional<Member> memberOptional = memberService.getMember(id);
+        if (memberOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("아이디를 찾을수 없습니다.");
+        }
+        return ResponseEntity.ok().body(memberOptional.get());
     }
     
     // 사용자 & 관리자
     @DeleteMapping("/members/{id}")
     public HttpEntity<Object> deleteMember(@PathVariable("id") Long id) {
-        memberService.removeMember(id);
-        return ResponseEntity.ok("계정 삭제");
+        return ResponseEntity.ok(memberService.removeMember(id));
     }
 
 

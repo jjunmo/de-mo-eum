@@ -1,10 +1,12 @@
 package kr.co.promisemomo.module.promise.entity;
 
+import kr.co.promisemomo.module.common.BaseTime;
 import kr.co.promisemomo.module.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,15 +18,17 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "promise")
-public class Promise {
+public class Promise extends BaseTime {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(name = "promise_name")
+    @Comment("이름")
     private String name;
 
+    @Comment("년도")
     private Integer year;
     private Integer month;
     private Integer day;

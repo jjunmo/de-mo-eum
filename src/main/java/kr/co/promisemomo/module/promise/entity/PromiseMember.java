@@ -1,5 +1,6 @@
 package kr.co.promisemomo.module.promise.entity;
 
+import kr.co.promisemomo.module.common.BaseTime;
 import kr.co.promisemomo.module.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "promise_member")
-public class PromiseMember {
+public class PromiseMember extends BaseTime {
 
     @Id
     @GeneratedValue

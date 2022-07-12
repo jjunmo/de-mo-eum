@@ -2,6 +2,7 @@ package kr.co.promisemomo.module.promise.service;
 
 import kr.co.promisemomo.module.member.entity.Member;
 import kr.co.promisemomo.module.member.repository.MemberRepository;
+import kr.co.promisemomo.module.promise.dto.PromiseCreateRequest;
 import kr.co.promisemomo.module.promise.entity.Promise;
 import kr.co.promisemomo.module.promise.entity.PromiseMember;
 import kr.co.promisemomo.module.promise.repository.PromiseMemberRepository;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,19 +51,22 @@ public class PromiseService {
     
     // TODO:약속 추가 로그인 상태에 따라 ..
     //사용자
-    public Promise addPromise(Long id ,Promise requestpromise){
-        Optional<Member> memberOptional = memberRepository.findById(id);
-        //로그인이 안되어있을경우 나중에 추가필요
-        if(memberOptional.isEmpty()) return null;
-        
-        requestpromise.setMember(memberOptional.get());
-        promiseRepository.save(requestpromise);
+    public Promise addPromise(Member member , PromiseCreateRequest promiseCreateRequest){
+        Promise promiseParam = promiseCreateRequest.dtoToEntity(member);
 
-        return requestpromise;
+        Promise promise = promiseRepository.save(promiseParam);
+        // List 빼서 값을 저장하고 promise set
+        return promise;
     }
 
+    public String validationPromise (PromiseCreateRequest promiseCreateRequest) {
+
+        if (promiseCreateRequest.getName().equals("")) {
+            return "이름이 없습니다.";
+        }
 
 
-
+        return "OK";
+    }
 
 }
