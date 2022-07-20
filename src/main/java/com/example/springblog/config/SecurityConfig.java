@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PrincipalDetailService principalDetailService;
 
     // 회원수정하고 나면 세션이 안 바뀌고 로그아웃 돼서 사용함
+    // branch
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
