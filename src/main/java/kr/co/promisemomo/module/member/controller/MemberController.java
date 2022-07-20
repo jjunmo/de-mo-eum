@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MemberController {
-    //고장
+    //고장 2
     @GetMapping(value = "/")
     public String index() {
         return "index";
