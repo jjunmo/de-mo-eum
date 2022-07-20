@@ -1,10 +1,9 @@
 package com.example.springblog.controller.api;
 
-import com.example.springblog.handler.dto.ResponseDto;
-import com.example.springblog.model.User;
+import com.example.springblog.model.entity.User;
 import com.example.springblog.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,25 +14,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class UserApiController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
 
     // Json 데이터를 받으려면 @RequestBody로 받아야함
     // 회원가입
     @PostMapping("/auth/joinProc")
-    public ResponseDto<Integer> save(@RequestBody User user) {
+    public ResponseEntity<Object> save(@RequestBody User user) {
         System.out.println("UserApiController : save 호출됨");
         userService.회원가입(user);
-        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 JSON으로 변환하여 전송 (JACKSON)
+        return ResponseEntity.ok().build(); // 자바 오브젝트를 JSON으로 변환하여 전송 (JACKSON)
     }
 
     @PutMapping("/user")
-    public ResponseDto<Integer> update(@RequestBody User user) {
+    public ResponseEntity<Object>  update(@RequestBody User user) {
 
         userService.회원수정(user);
         // 여기서는 트랜잭션이 종료되기 때문에 DB값은 변경이 됐음
@@ -45,7 +44,7 @@ public class UserApiController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+        return ResponseEntity.ok().build();
     }
 
 

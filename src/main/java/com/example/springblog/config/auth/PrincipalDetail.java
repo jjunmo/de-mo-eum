@@ -1,8 +1,7 @@
 package com.example.springblog.config.auth;
 
-import com.example.springblog.model.User;
+import com.example.springblog.model.entity.User;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +13,7 @@ import java.util.Collection;
 @Getter
 public class PrincipalDetail implements UserDetails {
 
-    private User user; // 콤포지션
+    private final User user; // 콤포지션
 
     public PrincipalDetail(User user) {
         this.user = user;
@@ -57,13 +56,8 @@ public class PrincipalDetail implements UserDetails {
     // 계정의 권한을 리턴 (권한이 여러개 있을 수 있어서 루프를 돌 수도 있음)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         Collection<GrantedAuthority> collectors = new ArrayList<>();
-
-        collectors.add(() -> {
-            return "ROLE_" + user.getRole();
-        });
-
+        collectors.add(() -> "ROLE_" + user.getRole());
         return collectors;
     }
 }

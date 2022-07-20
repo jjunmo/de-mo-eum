@@ -13,8 +13,6 @@ let index = {
             role: $(".radio-value:checked").val(),
         };
         let id = $("#id").val();
-
-
         console.log(data)
         console.log(id)
 
@@ -24,7 +22,7 @@ let index = {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json"
-        }).done(function (res) {
+        }).done(function () {
             alert("회원수정이 완료되었습니다.");
             location.href = "/";
         }).fail(function (error) {

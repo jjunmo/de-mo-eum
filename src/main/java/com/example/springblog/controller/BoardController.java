@@ -1,9 +1,10 @@
 package com.example.springblog.controller;
 
 import com.example.springblog.config.auth.PrincipalDetail;
-import com.example.springblog.model.Board;
-import com.example.springblog.model.User;
+import com.example.springblog.model.entity.Board;
+import com.example.springblog.model.entity.User;
 import com.example.springblog.service.BoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
+@RequiredArgsConstructor
 public class BoardController {
 
-    @Autowired
-    private BoardService boardService;
+    private final BoardService boardService;
 
     // 전체 글 보기
     @GetMapping({"", "/"})
@@ -42,9 +43,6 @@ public class BoardController {
         return "date";
     }
 
-
-
-
     @GetMapping("/board/{id}")
     public String findById(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("board", boardService.글상세보기(id));
@@ -61,11 +59,7 @@ public class BoardController {
         } else {
             return "redirect:/";
         }
-
-
     }
-
-
 
     @GetMapping("/board/saveForm")
     public String saveForm() {

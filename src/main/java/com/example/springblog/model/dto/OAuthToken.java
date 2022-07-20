@@ -1,4 +1,4 @@
-package com.example.springblog.model;
+package com.example.springblog.model.dto;
 
 import lombok.Data;
 

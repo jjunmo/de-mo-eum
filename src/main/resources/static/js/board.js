@@ -48,7 +48,8 @@ let index = {
             alert("글쓰기가 완료되었습니다.");
             location.href = "/";
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            // alert(JSON.stringify(error));
+            alert(error);
         });
 
     },
@@ -61,11 +62,11 @@ let index = {
             type: "DELETE",
             url: "/api/board/" + id,
             dataType: "json",
-        }).done(function (res) {
+        }).done(function () {
             alert("삭제가 완료되었습니다.");
             location.href = "/";
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            alert(error);
         });
 
     },
@@ -86,11 +87,11 @@ let index = {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json"
-        }).done(function (res) {
+        }).done(function () {
             alert("글 수정이 완료되었습니다.");
             location.href = "/";
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            alert(error);
         });
 
     },

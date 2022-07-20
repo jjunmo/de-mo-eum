@@ -1,26 +1,24 @@
 package com.example.springblog.controller;
 
 import com.example.springblog.config.auth.PrincipalDetail;
-import com.example.springblog.model.Board;
-import com.example.springblog.model.RoleType;
-import com.example.springblog.model.User;
+import com.example.springblog.model.entity.Board;
+import com.example.springblog.model.entity.RoleType;
+import com.example.springblog.model.entity.User;
 import com.example.springblog.service.AdminService;
-import com.example.springblog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class AdminController {
-
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
 
     @GetMapping("/admin")
     public String adminPage(@AuthenticationPrincipal PrincipalDetail principalDetail) {
@@ -64,9 +62,6 @@ public class AdminController {
     }
 
 
-
-
-
     // 방문 통계 관리
     @GetMapping("/admin/manage/visit")
     public String manageVisit(@AuthenticationPrincipal PrincipalDetail principalDetail, Model model) {
@@ -77,8 +72,6 @@ public class AdminController {
             int totalUsersCount = adminService.getTotalUsersCount();
             model.addAttribute("totalVisitCount", totalVisitCount);
             model.addAttribute("totalUserCount", totalUsersCount);
-
-
 
             return "/admin/manageVisit";
         } else {

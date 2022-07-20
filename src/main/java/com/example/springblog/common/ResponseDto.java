@@ -1,4 +1,4 @@
-package com.example.springblog.handler.dto;
+package com.example.springblog.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ResponseDto<T> {
-    int status;
     T data;
 }
