@@ -26,6 +26,8 @@ public class PromiseRestController {
     
     private final String noLogin = "로그인이 필요합니다.";
 
+    // 수정을 했습니다.
+
     /**
      * 약속생성
      * @param memberId 멤버고유번호
