@@ -4,6 +4,7 @@ import kr.co.promisemomo.module.common.BaseTime;
 import kr.co.promisemomo.module.member.role.RoleType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 @Table(name = "member")
 public class Member extends BaseTime {
 
