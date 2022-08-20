@@ -99,9 +99,13 @@ public class MemberService {
                 Member memberParam = new Member();
                 memberParam.settingKakaoProfile(kakaoProfile);
                 return memberRepository.save(memberParam);
+
             }else{
 
                 Optional<Member> memberOptional = memberRepository.findByKakaoIdAndDeleteCheck(kakaoId, "N");
+
+                //member에 중복 저장됨
+
                 if (memberOptional.isPresent()) {
                     return memberOptional.get();
                 } else {
