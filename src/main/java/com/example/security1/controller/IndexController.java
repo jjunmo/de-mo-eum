@@ -32,8 +32,8 @@ public class IndexController {
 
     //SpringSecurity가 중간에 낚아챔  - SecurityConfig 파일 생성 후 작동안함.
     @GetMapping("/login")
-    public @ResponseBody String login(){
-        return "login";
+    public String login(){
+        return "loginForm";
     }
 
     @GetMapping("/join")
