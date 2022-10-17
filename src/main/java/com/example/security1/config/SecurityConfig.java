@@ -23,7 +23,9 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/loginForm");
+                .loginPage("/loginForm")
+                .loginProcessingUrl("/login") // 해당주소 호출시 시큐리티로 빠져서 대신 로그인 진행됨.
+                .defaultSuccessUrl("/");
 
         return http.build();
     }
