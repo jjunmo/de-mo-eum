@@ -20,7 +20,7 @@ public class MemberRestController {
     public final MemberService memberService;
 
     //kauth.kakao.com/oauth/authorize?client_id=f398d5912c151f13e22b5fecfbd1f249&redirect_uri=http://localhost:8080/oauth/kakao&response_type=code
-    //Redirect URI=http://localhost:8080/oauth/kakao
+    //Redirect URI=v
     @GetMapping("/oauth/kakao")
     public HttpEntity<Object> kakaoCallback(@RequestParam(defaultValue = "") String code) {
 
