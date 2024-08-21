@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group = 'link.aiapp'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    compileOnly 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.9'
+
+}
+
+jar {
+    manifest {
+        attributes(
+                'Implementation-Title': 'Logging Module',
+                'Implementation-Version': 2
+        )
+    }
+}
+
+
+test {
+    useJUnitPlatform()
+}
