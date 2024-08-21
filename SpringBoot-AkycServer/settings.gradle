@@ -1,0 +1,4 @@
+rootProject.name = 'akyc_server'
+include 'akyc-domain'
+include 'akyc-common'
+include 'akyc-data'
