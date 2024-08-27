@@ -15,7 +15,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     compileOnly 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.9'
 
