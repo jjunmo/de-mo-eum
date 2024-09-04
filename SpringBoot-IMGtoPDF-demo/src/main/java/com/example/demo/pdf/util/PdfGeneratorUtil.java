@@ -9,7 +9,10 @@ import org.apache.pdfbox.util.Matrix;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class PdfGeneratorUtil {
 
@@ -106,6 +109,32 @@ public class PdfGeneratorUtil {
 //        drawLine(contentStream,Color.DARK_GRAY, 2 * sectionWidth, PdfConstants.FOOTER_HEIGHT, 2 * sectionWidth, pageHeight - PdfConstants.HEADER_HEIGHT);
     }
 
+    public static void addImageFromFile(PDPageContentStream contentStream,
+                                        File imageFile,
+                                        PDDocument document,
+                                        float sectionWidth,
+                                        float sectionHeight) throws IOException {
+        float availableHeight = sectionHeight - (2 * PdfConstants.VERTICAL_MARGIN);
+        float availableWidth = sectionWidth - 10;
+
+        // 이미지 파일에서 직접 PDImageXObject 생성
+        PDImageXObject image = PDImageXObject.createFromFileByContent(imageFile, document);
+        float originalAspectRatio = image.getWidth() / (float) image.getHeight();
+
+        float imageWidth = availableWidth;
+        float imageHeight = imageWidth / originalAspectRatio;
+
+        if (imageHeight > availableHeight) {
+            imageHeight = availableHeight;
+            imageWidth = imageHeight * originalAspectRatio;
+        }
+
+        float xPosition = 5 + (sectionWidth - imageWidth) / 2;
+        float yPosition = PdfConstants.FOOTER_HEIGHT + PdfConstants.VERTICAL_MARGIN + (availableHeight - imageHeight) / 2;
+
+        // 이미지 그리기
+        contentStream.drawImage(image, xPosition, yPosition, imageWidth, imageHeight);
+    }
     /*
     좌측 섹션 이미지 추가
      */
